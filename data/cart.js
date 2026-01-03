@@ -21,18 +21,22 @@ function saveToLocalStorage(){
 
 export function addToCart(productId) {
     let matchingItem;
+    let quantityClass = `.js-quantity-selector-${productId}`;
+    const selectedQuantity = document.body.querySelector(quantityClass).value;
+    console.log(selectedQuantity);
+
     cart.forEach((cartItem) => {
         if (cartItem.productId === productId)
             matchingItem = cartItem;
     });
 
     if (matchingItem) {
-        matchingItem.quantity++;
+        matchingItem.quantity += Number(selectedQuantity);
     }
     else {
         cart.push({
             productId: productId,
-            quantity: 1
+            quantity: Number(selectedQuantity)
         });
     }
     saveToLocalStorage();
