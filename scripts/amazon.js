@@ -1,8 +1,12 @@
 import {cart} from "../data/cart.js"
+import { products } from "../data/products.js";
 // import {cart as mycart} from "../data/cart.js"
 
 /* product list comes from folder data/product.js. Since we load product.js first in our amazon.html, 
-we can use product list form Product.js in amazom.js */
+we can use product list form Product.js in amazom.js 
+
+Earlier in code development we were loading all js files, thats why upper comment says all this
+Later we switched to using Modules*/
 
 let productHTMLElement = '';
 products.forEach((product) => {
