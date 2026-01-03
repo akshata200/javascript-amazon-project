@@ -1,6 +1,7 @@
-import {cart} from "../data/cart.js"
+import { cart, addToCart } from "../data/cart.js"
 import { products } from "../data/products.js";
 // import {cart as mycart} from "../data/cart.js"
+// import * as cartModule from "../data/cart.js"
 
 /* product list comes from folder data/product.js. Since we load product.js first in our amazon.html, 
 we can use product list form Product.js in amazom.js 
@@ -69,28 +70,15 @@ document.body.querySelector('.js-products-grid').innerHTML = productHTMLElement;
 document.body.querySelectorAll('.js-add-to-cart').forEach((button) => {
   button.addEventListener('click', () => {
     const productId = button.dataset.productId;
-
-    let matchingItem;
-    cart.forEach((cartItem) => {
-      if (cartItem.productId === productId)
-        matchingItem = cartItem;
-    });
-
-    if (matchingItem) {
-      matchingItem.quantity++;
-    }
-    else {
-      cart.push({
-        productId: productId,
-        quantity: 1
-      });
-    }
-
-    let cartQuantity = 0;
-    cart.forEach(cartItem =>{
-      cartQuantity += cartItem.quantity;
-    });
-    document.body.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-
+    addToCart(productId);
+    updatecartQuantity();
   })
 });
+
+function updatecartQuantity() {
+  let cartQuantity = 0;
+  cart.forEach(cartItem => {
+    cartQuantity += cartItem.quantity;
+  });
+  document.body.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+}
