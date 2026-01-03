@@ -1,15 +1,16 @@
-import { cart } from '../data/cart.js'
+import { cart, deleteFromCart } from '../data/cart.js'
 import { products } from '../data/products.js'
 import { exportCurrency } from './utils/money.js'
 
 
 let cartSummaryHTML = '';
-cart.forEach((cartItem)=>{
-
+console.log('Show cart Items');
+console.log(cart)
+cart.forEach((cartItem) => {
     // fetch product by productId
     const productId = cartItem.productId;
     const [product] = products.filter(product => product.id === productId);
-    
+
     cartSummaryHTML += `
         <div class="cart-item-container">
             <div class="delivery-date">
@@ -34,7 +35,8 @@ cart.forEach((cartItem)=>{
                   <span class="update-quantity-link link-primary">
                     Update
                   </span>
-                  <span class="delete-quantity-link link-primary">
+                  <span class="delete-quantity-link link-primary js-delete-quantity-link"
+                        data-product-id="${cartItem.productId}" >
                     Delete
                   </span>
                 </div>
@@ -89,3 +91,14 @@ cart.forEach((cartItem)=>{
     `;
 });
 document.body.querySelector('.order-summary').innerHTML = cartSummaryHTML;
+
+
+// adding event listener to Delete
+const deleteCartItemElements = document.body.querySelectorAll('.js-delete-quantity-link');
+deleteCartItemElements.forEach((deleteCartItemElement) => {
+    deleteCartItemElement.addEventListener('click', () => {
+        const productId = deleteCartItemElement.dataset.productId;
+        deleteFromCart(productId);
+        console.log(cart);
+    })
+})
