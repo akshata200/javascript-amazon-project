@@ -9,6 +9,13 @@ we can use product list form Product.js in amazom.js
 Earlier in code development we were loading all js files, thats why upper comment says all this
 Later we switched to using Modules*/
 
+/*
+Main idea of Javascript
+1. Save the data
+2. generate the HTML
+3. Make it Interactive
+*/
+
 let productHTMLElement = '';
 products.forEach((product) => {
   productHTMLElement += `
