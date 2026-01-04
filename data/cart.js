@@ -51,3 +51,11 @@ export function deleteFromCart(productId) {
     //     cart.splice(index, 1);
     // }
 }
+
+export function calcCartQuantity(){
+    let totalQuantity = 0;
+    cart.forEach(cartItem => {
+        totalQuantity += cartItem.quantity;
+    });
+    return totalQuantity;
+}
