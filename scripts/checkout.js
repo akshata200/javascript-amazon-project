@@ -1,6 +1,7 @@
 import { cart, deleteFromCart, calcCartQuantity, updatecartItemQuantity } from '../data/cart.js'
 import { products } from '../data/products.js'
 import { exportCurrency } from './utils/money.js'
+import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
 
 let cartSummaryHTML = '';
@@ -100,6 +101,10 @@ cart.forEach((cartItem) => {
 });
 document.body.querySelector('.order-summary').innerHTML = cartSummaryHTML;
 updateCartQuantity();
+
+let date = dayjs()
+const deliveryDate = date.add(7,'days');
+console.log(deliveryDate.format('dddd, MMMM-D'))
 
 
 // adding event listener to Delete
