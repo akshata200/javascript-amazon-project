@@ -73,3 +73,9 @@ export function updatecartItemQuantity(productId, newQuantity) {
         saveToLocalStorage();
     }
 }
+
+export function updateDeliveryOption(productId, newDeliveryOptionId){
+    const [cartItem] = cart.filter(cartItem => cartItem.productId === productId);
+    cartItem.deliveryOptionId = newDeliveryOptionId;
+    saveToLocalStorage();
+}
