@@ -15,3 +15,8 @@ export const deliveryOptions = [
         priceCents : 999
     }
 ];
+
+export function getDeliveryOptionsById(deliveryOptionId){
+    const [productDeliveryDetails] = deliveryOptions.filter(deliveryOption => deliveryOption.id === deliveryOptionId);
+    return productDeliveryDetails || deliveryOptions[0];
+}
