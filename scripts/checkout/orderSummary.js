@@ -2,6 +2,7 @@ import { cart, deleteFromCart, calcCartQuantity, updatecartItemQuantity, updateD
 import { products, getProductById} from '../../data/products.js'
 import { formatCurrency } from '../utils/money.js'
 import { deliveryOptions, getDeliveryOptionsById } from '../../data/deliveryOptions.js'
+import { renderPaymentSummary } from './paymentSummary.js'
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
 
@@ -82,6 +83,7 @@ export function renderOrderSummary() {
       const cartItemContainerElement = document.body.querySelector(`.js-cart-item-container-${productId}`);
       cartItemContainerElement.remove();
       updateCartQuantity();
+      renderPaymentSummary();
     })
   })
 
@@ -91,7 +93,7 @@ export function renderOrderSummary() {
     updateCartItemElement.addEventListener('click', () => {
       const productId = updateCartItemElement.dataset.productId;
       const cartItemContainer = document.body.querySelector(`.js-cart-item-container-${productId}`)
-      cartItemContainer.classList.add('is-editing-quantity')
+      cartItemContainer.classList.add('is-editing-quantity');
     })
   })
 
@@ -100,7 +102,8 @@ export function renderOrderSummary() {
   saveLinkElements.forEach((saveLinkElement) => {
     saveLinkElement.addEventListener('click', () => {
       const productId = saveLinkElement.dataset.productId;
-      handleQuantity(productId)
+      handleQuantity(productId);
+      renderPaymentSummary();
 
     })
   })
@@ -112,7 +115,8 @@ export function renderOrderSummary() {
       if (event.key !== 'Enter' && event.key !== ' ')
         return;
       const productId = quantityInputElement.dataset.productId;
-      handleQuantity(productId)
+      handleQuantity(productId);
+      renderPaymentSummary();
     })
   });
 
@@ -123,6 +127,7 @@ export function renderOrderSummary() {
       const { productId, deliveryOptionId } = deliveryOption.dataset;
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
+      renderPaymentSummary();
     })
   })
 
