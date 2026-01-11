@@ -22,7 +22,7 @@ export function renderOrderSummary() {
     let formattedDeliveryDate = generateFormattedDate(productDeliveryDetails.deliveryDays);
 
     cartSummaryHTML += `
-        <div class="cart-item-container
+        <div class="cart-item-container js-cart-item-container
             js-cart-item-container-${product.id}">
             <div class="delivery-date js-delivery-date">
               Delivery date: ${formattedDeliveryDate}
@@ -39,7 +39,7 @@ export function renderOrderSummary() {
                 <div class="product-price">
                   $${formatCurrency(product.priceCents)}
                 </div>
-                <div class="product-quantity">
+                <div class="product-quantity js-product-quantity-${product.id}">
                   <span>
                     Quantity: <span class="quantity-label js-quantity-label-${cartItem.productId}">${cartItem.quantity}</span>
                   </span>
@@ -53,7 +53,8 @@ export function renderOrderSummary() {
                         data-product-id="${cartItem.productId}">
                         Save
                   </span>
-                  <span class="delete-quantity-link link-primary js-delete-quantity-link"
+                  <span class="delete-quantity-link link-primary js-delete-quantity-link
+                              js-delete-quantity-link-${cartItem.productId}"
                         data-product-id="${cartItem.productId}" >
                     Delete
                   </span>
@@ -70,7 +71,10 @@ export function renderOrderSummary() {
           </div>
     `;
   });
-  document.body.querySelector('.order-summary').innerHTML = cartSummaryHTML;
+  
+  if(document.body.querySelector('.js-order-summary') != null)
+    document.body.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
+  //document.body.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
   updateCartQuantity();
 
 
@@ -140,7 +144,8 @@ renderOrderSummary();
 
 function updateCartQuantity() {
   let cartQuantity = calcCartQuantity();
-  document.body.querySelector('.js-checkout-cart-quantity').innerHTML = `Checkout (${cartQuantity} items)`;
+  if(document.body.querySelector('.js-checkout-cart-quantity') != null)
+    document.body.querySelector('.js-checkout-cart-quantity').innerHTML = `Checkout (${cartQuantity} items)`;
 }
 
 function updateProductConatinerQuantity(productId, productQuantity) {

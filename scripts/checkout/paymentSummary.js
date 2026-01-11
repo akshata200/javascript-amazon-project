@@ -61,5 +61,9 @@ export function renderPaymentSummary(){
     `
 
     document.body.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
+
+    /*
+    if(document.body.querySelector('.js-payment-summary') != null)
+      document.body.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;*/
     
 }
