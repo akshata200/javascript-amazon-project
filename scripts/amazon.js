@@ -1,5 +1,5 @@
 import { cart, addToCart, calcCartQuantity } from "../data/cart.js"
-import { products } from "../data/products.js";
+import { products, loadProducts } from "../data/products.js";
 import { formatCurrency } from './utils/money.js'
 // import {cart as mycart} from "../data/cart.js"
 // import * as cartModule from "../data/cart.js"
@@ -17,9 +17,15 @@ Main idea of Javascript
 3. Make it Interactive
 */
 
-let productHTMLElement = '';
-products.forEach((product) => {
-  productHTMLElement += `
+loadProducts(renderProductsGrid);
+
+function renderProductsGrid() {
+
+
+
+  let productHTMLElement = '';
+  products.forEach((product) => {
+    productHTMLElement += `
         <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
@@ -71,21 +77,22 @@ products.forEach((product) => {
           </button>
         </div>
     `;
-})
-
-document.body.querySelector('.js-products-grid').innerHTML = productHTMLElement;
-updatecartQuantity();
-const productPreviousTimeouts = [];
-
-// add to cart functionailty
-document.body.querySelectorAll('.js-add-to-cart').forEach((button) => {
-  button.addEventListener('click', () => {
-    const productId = button.dataset.productId;
-    addToCart(productId);
-    showAddedToCartMessage(productId)
-    updatecartQuantity();
   })
-});
+
+  document.body.querySelector('.js-products-grid').innerHTML = productHTMLElement;
+  updatecartQuantity();
+  const productPreviousTimeouts = [];
+
+  // add to cart functionailty
+  document.body.querySelectorAll('.js-add-to-cart').forEach((button) => {
+    button.addEventListener('click', () => {
+      const productId = button.dataset.productId;
+      addToCart(productId);
+      showAddedToCartMessage(productId)
+      updatecartQuantity();
+    })
+  });
+}
 
 function updatecartQuantity() {
   let cartQuantity = calcCartQuantity();
@@ -93,7 +100,7 @@ function updatecartQuantity() {
 }
 
 function showAddedToCartMessage(productId) {
-  if(productPreviousTimeouts[productId]){
+  if (productPreviousTimeouts[productId]) {
     clearTimeout(productPreviousTimeouts[productId]);
   }
   const messageElement = document.body.querySelector(`.js-added-to-cart-${productId}`)
