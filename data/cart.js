@@ -20,6 +20,18 @@ export function loadFromStorage() {
         ];
 }
 
+export function loadCart(func){
+    const request = new XMLHttpRequest();
+
+    request.addEventListener('load',()=>{
+        console.log(request.response);
+        func();
+    })
+
+    request.open('GET','https://supersimplebackend.dev/cart')
+    request.send();
+}
+
 
 function saveToLocalStorage() {
     localStorage.setItem('cart', JSON.stringify(cart));
