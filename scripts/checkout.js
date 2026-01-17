@@ -13,7 +13,7 @@ async function loadPage() {
         await fetchProducts();
         const resolveValue = await new Promise((resolve,reject) => {
             loadCart(() => {
-                reject('Load cart rejected');
+                //reject('Load cart rejected');
                 resolve('This is resolve value of load cart in await');})
         })
         console.log("Await completes");
