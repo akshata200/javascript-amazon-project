@@ -58,6 +58,10 @@ export function fetchProducts() {
         return new Product(product);
       });
       console.log('Fetch Products')
+    })
+    .catch((error)=>{
+      console.log("Something went wrong. Please try again later");
+      console.log(error);
     });
   return promise;
 }
@@ -69,6 +73,7 @@ fetchProducts().then(()=>{
 
 export function loadProducts(func) {
   const request = new XMLHttpRequest();
+
   request.addEventListener('load', () => {
     const productList = JSON.parse(request.response);
     products = productList.map((productDetails) => {
@@ -82,9 +87,18 @@ export function loadProducts(func) {
 
   });
 
+  request.addEventListener('error',(error)=>{
+    console.log("Something went wrong while loading products. Please try again later");
+    console.log(error);
+  })
+
   request.open('GET', 'https://supersimplebackend.dev/products');
   request.send();
 }
+/*
+loadProducts(()=>{
+  console.log("Just some text")
+});*/
 
 
 

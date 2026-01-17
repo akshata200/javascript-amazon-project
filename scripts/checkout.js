@@ -7,13 +7,22 @@ import { loadCart } from '../data/cart.js'
 //import '../data/cart-class.js'
 
 async function loadPage() {
-    console.log("Load Page");
-    await fetchProducts();
-    const resolveValue = await new Promise((resolve) => {
-        loadCart(() => resolve('This is resolve value of load cart in await'))
-    })
-    console.log("Await completes");
-    console.log(resolveValue);
+    try {
+        console.log("Load Page");
+        //throw "Throwing some error for practice"
+        await fetchProducts();
+        const resolveValue = await new Promise((resolve,reject) => {
+            loadCart(() => {
+                reject('Load cart rejected');
+                resolve('This is resolve value of load cart in await');})
+        })
+        console.log("Await completes");
+        console.log(resolveValue);
+    }
+    catch (error) {
+        console.log("Something went wrong while loading resources. Please try again later");
+        console.log(error);
+    }
     renderOrderSummary();
     renderPaymentSummary();
 }
