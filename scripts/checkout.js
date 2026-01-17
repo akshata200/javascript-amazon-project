@@ -1,11 +1,25 @@
 import { renderOrderSummary } from './checkout/orderSummary.js'
 import { renderPaymentSummary } from './checkout/paymentSummary.js'
-import { loadProducts,fetchProducts} from "../data/products.js";
+import { loadProducts, fetchProducts } from "../data/products.js";
 import { loadCart } from '../data/cart.js'
 //import '../data/backend-practice.js'
 // import '../data/cart-oop.js'
 //import '../data/cart-class.js'
 
+async function loadPage() {
+    console.log("Load Page");
+    await fetchProducts();
+    const resolveValue = await new Promise((resolve) => {
+        loadCart(() => resolve('This is resolve value of load cart in await'))
+    })
+    console.log("Await completes");
+    console.log(resolveValue);
+    renderOrderSummary();
+    renderPaymentSummary();
+}
+loadPage();
+
+/*
 Promise.all([
     fetchProducts(),
     new Promise((resolve)=>{
@@ -17,6 +31,7 @@ Promise.all([
     renderOrderSummary();
     renderPaymentSummary();
 });
+*/
 
 /*
 Promise.all([
