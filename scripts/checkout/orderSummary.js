@@ -139,7 +139,7 @@ export function renderOrderSummary() {
 
 //renderOrderSummary();
 
-function updateProductConatinerQuantity(productId, productQuantity) {
+function updateProductContainerQuantity(productId, productQuantity) {
   const productContainerQuantity = document.body.querySelector(`.js-quantity-label-${productId}`);
   productContainerQuantity.innerHTML = productQuantity;
 }
@@ -154,7 +154,7 @@ function handleQuantity(productId) {
   if (productQuantity > 0 && productQuantity <= 1000) {
     updatecartItemQuantity(productId, productQuantity);
     updateCartQuantityHeader();
-    updateProductConatinerQuantity(productId, productQuantity);
+    updateProductContainerQuantity(productId, productQuantity);
   }
 }
 
