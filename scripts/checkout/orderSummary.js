@@ -3,11 +3,11 @@ import { products, getProductById} from '../../data/products.js'
 import { formatCurrency } from '../utils/money.js'
 import { deliveryOptions, getDeliveryOptionsById } from '../../data/deliveryOptions.js'
 import { renderPaymentSummary } from './paymentSummary.js'
+import { updateCartQuantityHeader } from './checkoutHeader.js'
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
 
 export function renderOrderSummary() {
-
 
   let cartSummaryHTML = '';
   //console.log('Show cart Items');
@@ -75,7 +75,7 @@ export function renderOrderSummary() {
   if(document.body.querySelector('.js-order-summary') != null)
     document.body.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
   //document.body.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
-  updateCartQuantity();
+  updateCartQuantityHeader();
 
 
   // adding event listener to Delete
@@ -84,10 +84,11 @@ export function renderOrderSummary() {
     deleteCartItemElement.addEventListener('click', () => {
       const productId = deleteCartItemElement.dataset.productId;
       deleteFromCart(productId);
-      const cartItemContainerElement = document.body.querySelector(`.js-cart-item-container-${productId}`);
-      cartItemContainerElement.remove();
-      updateCartQuantity();
+      /*const cartItemContainerElement = document.body.querySelector(`.js-cart-item-container-${productId}`);
+      cartItemContainerElement.remove();*/
+      updateCartQuantityHeader();
       renderPaymentSummary();
+      renderOrderSummary();
     })
   })
 
@@ -140,14 +141,6 @@ export function renderOrderSummary() {
 
 //renderOrderSummary();
 
-
-
-function updateCartQuantity() {
-  let cartQuantity = calcCartQuantity();
-  if(document.body.querySelector('.js-checkout-cart-quantity') != null)
-    document.body.querySelector('.js-checkout-cart-quantity').innerHTML = `Checkout (${cartQuantity} items)`;
-}
-
 function updateProductConatinerQuantity(productId, productQuantity) {
   const productContainerQuantity = document.body.querySelector(`.js-quantity-label-${productId}`);
   productContainerQuantity.innerHTML = productQuantity;
@@ -162,7 +155,7 @@ function handleQuantity(productId) {
 
   if (productQuantity > 0 && productQuantity <= 1000) {
     updatecartItemQuantity(productId, productQuantity);
-    updateCartQuantity();
+    updateCartQuantityHeader();
     updateProductConatinerQuantity(productId, productQuantity);
   }
 }

@@ -17,11 +17,12 @@ Main idea of Javascript
 3. Make it Interactive
 */
 
+const productPreviousTimeouts = [];
+
 loadProducts(renderProductsGrid);
 
+
 function renderProductsGrid() {
-
-
 
   let productHTMLElement = '';
   products.forEach((product) => {
@@ -81,7 +82,6 @@ function renderProductsGrid() {
 
   document.body.querySelector('.js-products-grid').innerHTML = productHTMLElement;
   updatecartQuantity();
-  const productPreviousTimeouts = [];
 
   // add to cart functionailty
   document.body.querySelectorAll('.js-add-to-cart').forEach((button) => {

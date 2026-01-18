@@ -18,6 +18,7 @@ describe("test suite : renderOrderSummary", () => {
         document.querySelector('.js-test-container').innerHTML = `
             <div class="js-order-summary"></div>
             <div hidden class="js-payment-summary"></div>
+            <div hidden class="js-checkout-cart-quantity"></div>
         `
 
         spyOn(localStorage, 'setItem');
