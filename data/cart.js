@@ -32,6 +32,17 @@ export function loadCart(func){
     request.send();
 }
 
+export async function fetchCart(){
+    const promise = fetch('https://supersimplebackend.dev/cart')
+                        .then((response)=>{
+                            return response.text();
+                        }).then((res)=>{
+                            console.log("Fetch Cart")
+                            console.log(res);
+                        });
+    return promise;
+}
+
 
 function saveToLocalStorage() {
     localStorage.setItem('cart', JSON.stringify(cart));

@@ -1,12 +1,30 @@
 import { renderOrderSummary } from './checkout/orderSummary.js'
 import { renderPaymentSummary } from './checkout/paymentSummary.js'
 import { loadProducts, fetchProducts } from "../data/products.js";
-import { loadCart } from '../data/cart.js'
+import { loadCart, fetchCart } from '../data/cart.js'
 //import '../data/backend-practice.js'
 // import '../data/cart-oop.js'
 //import '../data/cart-class.js'
-
 async function loadPage() {
+    try {
+        console.log("Load Page");
+        //throw "Throwing some error for practice"
+        await fetchProducts();
+        await fetchCart();
+        console.log("Await completes");
+        //console.log(resolveValue);
+    }
+    catch (error) {
+        console.log("Something went wrong while loading resources. Please try again later");
+        console.log(error);
+    }
+    renderOrderSummary();
+    renderPaymentSummary();
+}
+loadPage();
+
+/**
+ * async function loadPage() {
     try {
         console.log("Load Page");
         //throw "Throwing some error for practice"
@@ -26,7 +44,7 @@ async function loadPage() {
     renderOrderSummary();
     renderPaymentSummary();
 }
-loadPage();
+ */
 
 /*
 Promise.all([
