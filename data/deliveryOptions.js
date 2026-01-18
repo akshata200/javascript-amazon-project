@@ -25,7 +25,17 @@ export function getDeliveryOptionsById(deliveryOptionId) {
 
 export function generateFormattedDate(daysCount) {
     let today = dayjs();
-    const deliveryDate = today.add(daysCount, 'days');
+    let deliveryDate = today.add(daysCount, 'days');
+    while(isWeekend(deliveryDate)){
+        deliveryDate = deliveryDate.add(1,'days');
+    }
     const formattedDeliveryDate = deliveryDate.format('dddd, MMMM D')
     return formattedDeliveryDate;
+}
+
+function isWeekend(date){
+    const day = date.format('dddd');
+    if( day === 'Saturday' || day === 'Sunday')
+        return true;
+    return false;
 }
