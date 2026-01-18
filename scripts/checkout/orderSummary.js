@@ -70,9 +70,7 @@ export function renderOrderSummary() {
     `;
   });
   
-  if(document.body.querySelector('.js-order-summary') != null)
-    document.body.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
-  //document.body.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
+  document.body.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
   updateCartQuantityHeader();
 
 
