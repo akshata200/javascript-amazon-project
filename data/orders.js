@@ -10,3 +10,7 @@ function saveToStorage(){
     localStorage.setItem('Orders',JSON.stringify(orders));
 }
 
+export function getOrderById(orderId){
+    const [order] = orders.filter(order=> order.id === orderId)
+    return order;
+}
