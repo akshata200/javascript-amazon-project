@@ -29,10 +29,12 @@ function loadProductTrackingPage() {
     const productImgElem = document.querySelector('.js-product-image');
     productImgElem.src = product.image
 
+    deliveryProgress(order, orderedProduct)
 
-    // console.log(order)
-    // console.log(orderedProduct)
-    // console.log(product)
+
+     console.log(order)
+     console.log(orderedProduct)
+     console.log(product)
 }
 
 await fetchProducts();
@@ -46,4 +48,57 @@ function formattedDate(date){
 function getOrderedProduct(order,productId){
     const [product] = order.products.filter(product => product.productId === productId )
     return product;
+}
+
+function deliveryProgress(order, orderedProduct){
+    //((currentTime - deliveryTime)/(deliveryTime - orderedTime)) * 100
+    const currentTime = dayjs().valueOf();
+    const deliveryTime = dayjs(orderedProduct.estimatedDeliveryTime).valueOf();
+    const orderedTime = dayjs(order.orderTime).valueOf();
+    console.log(currentTime);
+    console.log(deliveryTime)
+    console.log(orderedTime)
+
+    const progressPerc = Math.round(((currentTime - orderedTime)/(deliveryTime - orderedTime)) * 100);
+    
+    const progressBarElem = document.querySelector('.progress-bar')
+    console.log(progressPerc)
+
+
+    
+    if(progressPerc >= 100){
+        progressBarElem.style="width:100%";
+        updateProgressLabel('delivered')
+    }
+    else if(progressPerc >= 50 && progressPerc <= 99){
+        progressBarElem.style="width:50%";
+        updateProgressLabel('shipped');
+    }   
+    else if(progressPerc >= 0 && progressPerc <= 49){
+        progressBarElem.style="width:30%";
+        updateProgressLabel('preparing')
+    }
+        
+}
+
+function updateProgressLabel(progress){
+    const preparingElem = document.querySelector('.js-progress-label-preparing');
+    const shippedElem = document.querySelector('.js-progress-label-shipped');
+    const deliveredElem = document.querySelector('.js-progress-label-delivered');
+
+    if(progress === 'preparing'){
+        preparingElem.classList.add('current-status');
+        shippedElem.classList.remove('current-status');
+        deliveredElem.classList.remove('current-status');
+    }
+    else if(progress === 'shipped'){
+        preparingElem.classList.remove('current-status');
+        shippedElem.classList.add('current-status');
+        deliveredElem.classList.remove('current-status');
+    }
+    else if(progress === 'delivered'){
+        preparingElem.classList.remove('current-status');
+        shippedElem.classList.remove('current-status');
+        deliveredElem.classList.add('current-status');
+    }
 }
