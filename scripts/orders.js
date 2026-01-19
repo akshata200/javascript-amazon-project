@@ -1,17 +1,17 @@
 import { orders } from "../data/orders.js";
 import { formatCurrency } from '../scripts/utils/money.js'
-import { products, getProductById,fetchProducts } from '../data/products.js'
+import { products, getProductById, fetchProducts } from '../data/products.js'
+import { addToCart, calcCartQuantity  } from "../data/cart.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
 console.log(orders)
 
-async function loadOrderPage(){
+function loadOrderPage() {
     let ordersHTML = '';
-    await fetchProducts();
 
-    orders.forEach(order =>{
-        ordersHTML += 
-        `
+    orders.forEach(order => {
+        ordersHTML +=
+            `
         <div class="order-container">
           
           <div class="order-header">
@@ -42,16 +42,15 @@ async function loadOrderPage(){
 
 }
 
-async function loadOrderProducts(){
+function loadOrderProducts() {
     let productHTML = '';
-    await fetchProducts();
-    orders.forEach(order =>{
+    orders.forEach(order => {
         productHTML = '';
-        order.products.forEach(productDetails =>{
+        order.products.forEach(productDetails => {
             const product = getProductById(productDetails.productId);
             //console.log(product)
-            productHTML += 
-            `
+            productHTML +=
+                `
             <div class="product-image-container">
               <img src="${product.image}">
             </div>
@@ -63,17 +62,18 @@ async function loadOrderProducts(){
               <div class="product-delivery-date">
                 Arriving on: ${formattedDate(productDetails.estimatedDeliveryTime)}
               </div>
-              <div class="product-quantity">
+              <div class="product-quantity"">
                 Quantity: ${productDetails.quantity}
               </div>
-              <button class="buy-again-button button-primary">
+              <button class="buy-again-button button-primary
+                            js-buy-again-button-${order.id}-${productDetails.productId}">
                 <img class="buy-again-icon" src="images/icons/buy-again.png">
                 <span class="buy-again-message">Buy it again</span>
               </button>
             </div>
 
             <div class="product-actions">
-              <a href="tracking.html">
+              <a href="tracking.html?orderId=${order.id}&productId=${productDetails.productId}">
                 <button class="track-package-button button-secondary">
                   Track package
                 </button>
@@ -82,15 +82,40 @@ async function loadOrderProducts(){
             `
         })
 
-    document.body.querySelector(`.js-order-details-grid-${order.id}`).innerHTML = productHTML;
+        document.body.querySelector(`.js-order-details-grid-${order.id}`).innerHTML = productHTML;
     });
 }
 
+function buyProductAgain(){
+   orders.forEach(order => {
+        order.products.forEach(productDetails => {
+            document.body.querySelector(`.js-buy-again-button-${order.id}-${productDetails.productId}`)
+                .addEventListener('click',()=>{
+                    console.log(`Buy product ${productDetails.productId} again`);
+                    addToCart(productDetails.productId);
+                    updatecartQuantity();
+                })
+            
+        })
+
+        
+    });
+}
+
+await fetchProducts();
 loadOrderPage();
-loadOrderProducts()
+loadOrderProducts();
+buyProductAgain();
+updatecartQuantity();
 
 
-function formattedDate(date){
+
+function formattedDate(date) {
     const day = new dayjs(date).format('MMMM D');
     return day;
+}
+
+function updatecartQuantity() {
+  let cartQuantity = calcCartQuantity();
+  document.body.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
 }
