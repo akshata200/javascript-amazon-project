@@ -108,3 +108,4 @@ export function getProductById(productId) {
   const [product] = products.filter(product => product.id === productId);
   return product;
 }
+

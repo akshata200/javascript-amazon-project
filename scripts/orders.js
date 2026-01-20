@@ -107,6 +107,7 @@ loadOrderPage();
 loadOrderProducts();
 buyProductAgain();
 updatecartQuantity();
+redirectToSearchPage();
 
 
 
@@ -118,4 +119,22 @@ function formattedDate(date) {
 function updatecartQuantity() {
   let cartQuantity = calcCartQuantity();
   document.body.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+}
+
+function redirectToSearchPage() {
+  // click event
+  document.querySelector('.js-search-button').addEventListener('click', () => {
+    const searchText = document.querySelector('.js-search-bar').value;
+    window.location.href = `amazon.html?search=${searchText}`
+  })
+
+  // enter event
+  document.querySelector('.js-search-bar').addEventListener('keydown', (event) => {
+    //console.log(event)
+    if (event.key === 'Enter') {
+      const searchText = document.querySelector('.js-search-bar').value;
+      window.location.href = `amazon.html?search=${searchText}`
+    }
+  })
+
 }

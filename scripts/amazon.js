@@ -1,5 +1,5 @@
 import { cart, addToCart, calcCartQuantity } from "../data/cart.js"
-import { products, loadProducts } from "../data/products.js";
+import { products, loadProducts, fetchProducts } from "../data/products.js";
 import { formatCurrency } from './utils/money.js'
 // import {cart as mycart} from "../data/cart.js"
 // import * as cartModule from "../data/cart.js"
@@ -19,10 +19,13 @@ Main idea of Javascript
 
 const productPreviousTimeouts = [];
 
-loadProducts(renderProductsGrid);
+await fetchProducts();
+searchByURL();
+searchProduct();
 
 
-function renderProductsGrid() {
+function renderProductsGrid(products) {
+  console.log(products)
 
   let productHTMLElement = '';
   products.forEach((product) => {
@@ -92,6 +95,8 @@ function renderProductsGrid() {
       updatecartQuantity();
     })
   });
+  searchProduct()
+
 }
 
 function updatecartQuantity() {
@@ -109,3 +114,50 @@ function showAddedToCartMessage(productId) {
   }, 2000);
   messageElement.style.opacity = 1;
 }
+
+function searchProduct() {
+  // click event
+  document.querySelector('.js-search-button').addEventListener('click', () => {
+    const searchText = document.querySelector('.js-search-bar').value;
+    window.location.href = `amazon.html?search=${searchText}`
+    searchByURL();
+    document.querySelector('.js-search-bar').value = searchText;
+  })
+
+  // enter event
+  document.querySelector('.js-search-bar').addEventListener('keydown', (event) => {
+    //console.log(event)
+    if (event.key === 'Enter') {
+      const searchText = document.querySelector('.js-search-bar').value;
+      window.location.href = `amazon.html?search=${searchText}`
+      searchByURL();
+      document.querySelector('.js-search-bar').value = searchText;
+    }
+  })
+
+}
+
+function searchByURL() {
+
+  const searchURL = new URL(window.location.href);
+  const searchText = searchURL.searchParams.get('search');
+  if (searchText) {
+    // if search text is not null, display filtered products
+    document.querySelector('.js-search-bar').value = searchText;
+    let filteredProductList = filterProductByKeyword(searchText)
+    renderProductsGrid(filteredProductList)
+  }
+  else {
+    renderProductsGrid(products);
+  }
+}
+
+function filterProductByKeyword(searchText) {
+  let filteredProductList = products.filter((product) => {
+    return product.keywords.some(
+      keyword => keyword.toLowerCase() === searchText.toLowerCase()
+    )
+  });
+  return filteredProductList;
+}
+
